@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">newpay-component</string>
+    <string name="newton_component">Newton Component</string>
+    <string name="edit_text">EditText</string>
+</resources>
