@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: "com.novoda.bintray-release"
+
+
+publish {
+    userOrg = 'weixuefeng'
+    groupId = 'org.newtondeveloper'
+    artifactId = 'newton-component'
+    publishVersion = '0.0.1'
+    desc = 'Newton component'
+    website = 'https://github.com/newtondevelop/newton-component-android.git'
+}
 
 android {
     compileSdkVersion 29
