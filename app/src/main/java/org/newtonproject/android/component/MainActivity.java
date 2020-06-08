@@ -1,19 +1,26 @@
 package org.newtonproject.android.component;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,18 +30,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_planet);
         AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.planet1);
         AppCompatImageView imageView2 = (AppCompatImageView) findViewById(R.id.planet2);
-        AppCompatImageView imageView3 = (AppCompatImageView) findViewById(R.id.planet3);
-        AppCompatImageView imageView4 = (AppCompatImageView) findViewById(R.id.planet4);
+        AppCompatImageView logo1 = findViewById(R.id.logo1);
 
         Bitmap bitmap = initPage(Color.parseColor("#DFB349"), Color.parseColor("#527EDD"));
         Bitmap bitmap2 = initPage(Color.parseColor("#5EE321"), Color.parseColor("#AA9F82"));
-        Bitmap bitmap3 = initPage(Color.parseColor("#4852E0"), Color.parseColor("#DC4F51"));
-        Bitmap bitmap4 = initPage(Color.parseColor("#CAA051"), Color.parseColor("#633F77"));
+        Bitmap bitmap3 = initIcon(Color.parseColor("#4852E0"), Color.parseColor("#DC4F51"));
 
         imageView.setImageBitmap(bitmap);
         imageView2.setImageBitmap(bitmap2);
-        imageView3.setImageBitmap(bitmap3);
-        imageView4.setImageBitmap(bitmap4);
+
+        logo1.setImageBitmap(bitmap3);
+    }
+
+
+
+    private Bitmap initIcon(int startColor, int endColor) {
+        Bitmap icon = getBitmapFromVectorDrawable(this, R.drawable.tab_icon_h1);
+        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{startColor, endColor});
+        Bitmap gradientBg = drawableToBitmap(icon, gradientDrawable);
+
+        Bitmap bitmap1 = Bitmap.createBitmap(gradientBg.getWidth(), gradientBg.getHeight(), gradientBg.getConfig());
+        Paint paint = new Paint();
+        Canvas canvas = new Canvas(bitmap1);
+        canvas.drawBitmap(gradientBg, 0, 0, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        canvas.drawBitmap(icon, 0, 0, paint);
+        return bitmap1;
+    }
+
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     private Bitmap initPage(int startColor, int endColor) {
@@ -45,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Paint paint = new Paint();
         Canvas canvas = new Canvas(bitmap1);
         canvas.drawBitmap(bitmap, 0, 0, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.OVERLAY));
         canvas.drawBitmap(second, 0, 0, paint);
         return bitmap1;
     }

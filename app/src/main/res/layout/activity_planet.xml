@@ -25,27 +25,21 @@
         android:src="@drawable/img_bg_newplanet_overlay"
         android:scaleType="centerCrop"
         />
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/planet3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="27dp"
-        android:layout_width="152.55dp"
-        android:layout_height="230.4dp"
-        android:src="@drawable/img_bg_newplanet_overlay"
-        android:scaleType="centerCrop"
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/planet2"
+
         />
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/planet4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="27dp"
-        android:layout_width="152.55dp"
-        android:layout_height="230.4dp"
-        android:src="@drawable/img_bg_newplanet_overlay"
-        android:scaleType="centerCrop"
-        />
+   <androidx.appcompat.widget.AppCompatImageView
+       android:id="@+id/logo1"
+       android:layout_width="150dp"
+       android:layout_height="150dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintLeft_toLeftOf="parent"
+       android:layout_margin="16dp"
+       android:scaleType="center"
+       android:src="@drawable/tab_icon_h1"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
