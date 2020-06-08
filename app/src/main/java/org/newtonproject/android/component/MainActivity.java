@@ -3,6 +3,7 @@ package org.newtonproject.android.component;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlendMode;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.MaskFilter;
@@ -10,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.VectorDrawable;
@@ -45,16 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Bitmap initIcon(int startColor, int endColor) {
-        Bitmap icon = getBitmapFromVectorDrawable(this, R.drawable.tab_icon_h1);
+        Bitmap icon = getBitmapFromVectorDrawable(this, R.drawable.tab_icon_home);
         GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{startColor, endColor});
         Bitmap gradientBg = drawableToBitmap(icon, gradientDrawable);
 
-        Bitmap bitmap1 = Bitmap.createBitmap(gradientBg.getWidth(), gradientBg.getHeight(), gradientBg.getConfig());
+        Bitmap bitmap1 = Bitmap.createBitmap(icon.getWidth(), icon.getHeight(), icon.getConfig());
         Paint paint = new Paint();
         Canvas canvas = new Canvas(bitmap1);
+        int layerId = canvas.saveLayer(0f, 0f, gradientBg.getWidth(), gradientBg.getHeight(), paint, Canvas.ALL_SAVE_FLAG);
         canvas.drawBitmap(gradientBg, 0, 0, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         canvas.drawBitmap(icon, 0, 0, paint);
+        paint.setXfermode(null);
+        canvas.restoreToCount(layerId);
         return bitmap1;
     }
 
